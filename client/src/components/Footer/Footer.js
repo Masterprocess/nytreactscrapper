@@ -13,7 +13,7 @@ const Footer = () => (
           <h5 className="white-text">Check me out!</h5>
           <ul>
             <li><a className="grey-text text-lighten-3" href="http://www.christopherrackley.com/" target="_blank" rel="noopener noreferrer">My Portfolio</a></li>
-            <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/christopher-rackley/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/christopher-rackley/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
           </ul>
         </div>
       </div>
