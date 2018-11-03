@@ -1,14 +1,12 @@
 import React from 'react';
 import './Nav.css';
 
-// The ...props means, spread all of the passed props onto this element
-// That way we don't have to define them all individually
 const Nav = () => (
   <header>
     <div className="navbar-fixed">
       <nav>
         <div className="nav-wrapper container">
-          <a href="/" className="brand-logo">NYT News Scraper</a>
+          <a href="/" className="brand-logo">News Monger</a>
           <a href="#" data-activates="mobile-menu" className="button-collapse"><i className="material-icons">menu</i></a>
           <ul className="right hide-on-med-and-down">
             <li><a href="#search">Search</a></li>

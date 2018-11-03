@@ -3,8 +3,8 @@ import React from "react";
 export const Button = props => {
   return (
     <button
-      className="btn btn-floating waves-effect grey darken-1 secondary-content"
-      onClick={() => props.saveArticle({
+      className="btn btn-floating waves-effect waves-light grey darken-1 secondary-content"
+      onClick={() => props.click({
         _id: props._id,
         url: props.url,
         headline: props.headline,

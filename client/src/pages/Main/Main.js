@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
-import { Input, FormBtn } from '../../components/Form';
+import { Form, Input, FormBtn } from '../../components/Form';
 import API from '../../utils/API';
-import { Link } from 'react-router-dom';
 import { List, ListItem } from '../../components/List';
 
 class Main extends Component {
   state = {
     articles: [],
+    savedArticles: [],
     searchTerm: '',
     startYear: '',
     endYear: ''
   };
 
+  componentDidMount() {
+    this.loadArticles();
+  }
+
   loadArticles = () => {
-    // API.getArticles()
-    //   .then( res => res )
-    //   .catch( err => console.log(err) );
+    API.getSavedArticles()
+      .then( res => {
+        this.setState({ savedArticles: res.data });
+        console.log(this.state.savedArticles);
+      })
+      .catch( err => console.log(err) );
   };
 
   saveArticle = articleInfo => {
     API.saveArticle(articleInfo)
+      .then(res => this.loadArticles())
+      .catch(err => console.log(err));
+  };
+
+  removeArticle = id => {
+    API.removeArticle(id)
       .then(res => this.loadArticles())
       .catch(err => console.log(err));
   };
@@ -54,10 +67,11 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="container containers">
-        <h4 id="search">Search for Articles</h4>
+      <div className="container">
+        <hr />
+        <h4 id="search" className="offset">Search for Articles</h4>
         <div className="row">
-          <form id="search-form" className="col s12" action="" method="get">
+          <Form>
             <div className="row">
               <Input
                 value={this.state.searchTerm}
@@ -99,16 +113,16 @@ class Main extends Component {
             <FormBtn
               id="searchBtn"
               type="submit"
-              className="btn waves-effect waves-light search-btn"
               onClick={this.handleFormSubmit}
               disabled={ !(this.state.searchTerm && this.state.startYear) }
               children="Search"
             />
-          </form>
+          </Form>
         </div>
         {this.state.articles.length ? (
           <div>
-            <h4 id="results">Your Search Results</h4>
+            <hr />
+            <h4 id="results" className="offset">Your Search Results</h4>
             <List>
               {this.state.articles.map(article => (
                 <ListItem
@@ -120,7 +134,7 @@ class Main extends Component {
                   byline={ (article.byline && article.byline.original) ? article.byline.original : "NOT AVAILABLE" }
                   image="https://placehold.it//210x140"
                   date={article.pub_date}
-                  saveArticle={this.saveArticle}
+                  click={this.saveArticle}
                   title="Add article"
                   icon="add"
                 />
@@ -128,7 +142,38 @@ class Main extends Component {
             </List>
           </div>
         ) : (
-          <h4 id="results">Search to display results here</h4>
+          <div>
+            <hr />
+            <h5 id="results" className="offset"><em>Search results will display here</em></h5>
+          </div>
+        )}
+        {this.state.savedArticles.length ? (
+          <div>
+            <hr />
+            <h4 id="saved" className="offset">Your Saved Articles</h4>
+            <List>
+              {this.state.savedArticles.map(savedArticle => (
+                <ListItem
+                  key={savedArticle._id}
+                  _id={savedArticle._id}
+                  url={savedArticle.url}
+                  headline={savedArticle.headline}
+                  summary={savedArticle.summary}
+                  byline={savedArticle.byline}
+                  image={savedArticle.image}
+                  date={savedArticle.date}
+                  click={this.removeArticle}
+                  title="Remove article"
+                  icon="remove"
+                />
+              ))}
+            </List>
+          </div>
+        ) : (
+          <div>
+            <hr />
+            <h5 id="saved" className="offset"><em>There are no saved articles</em></h5>
+          </div>
         )}
       </div>
     );
